@@ -1,0 +1,44 @@
+syntax = "proto3";
+package Messages; 
+
+enum MessageType {
+    HEARTBEAT = 0; 
+    QUERYRESULTS = 1; 
+    QUERY = 2; 
+    PAGEREQUEST = 3;
+    PAGERESULT = 4; 
+}
+
+message Message {
+    string type = 1; 
+    oneof SubMessage {
+        PageRequest pagerequest = 2;
+        QueryResults queryresults = 3; 
+        PageResult pageresult = 4;
+        Query query = 5; 
+    }
+}
+
+message PageRequest { 
+    string path = 1; 
+}
+
+message QueryResults {
+    repeated QueryItem results = 1;
+}
+
+message QueryItem {
+    string path = 1; 
+    string name = 2; 
+}
+
+
+message PageResult {
+    string html = 1; 
+    string name = 2; 
+}
+
+message Query {
+    string query = 1; 
+}
+
