@@ -1,10 +1,15 @@
 using Messages; 
+using Newtonsoft.Json; 
+using Newtonsoft.Json.Linq; 
+using System.Collections.Generic; 
+using System.Linq; 
 
 namespace Yelper 
 {
 
     class DataManager 
     {
+        string Bearer = null; 
         public static DataManager Instance {
             get {
                 if (instance == null){
@@ -23,10 +28,21 @@ namespace Yelper
 
         public Messages.QueryResults Query(string query)
         {
+            if(Bearer == null){
+                Bearer = Yelp.Instance.GetBearerToken(); 
+            }
+            var yelpResult = JObject.Parse(Yelp.Instance.Search(Bearer, query, "San Fransico, CA"));
+
+            var businesses = yelpResult["businesses"] as JArray; 
+
+            var asList = from bus in businesses 
+                            select new Messages.QueryItem() {Name = bus["name"].ToString(), Path = bus["id"].ToString()}; 
+            
             var results = new Messages.QueryResults(); 
-            results.Results.Add(new QueryItem(){Name = $"q {query} 1", Path = $"q {query} 1"});
-            results.Results.Add(new QueryItem(){Name = $"q {query} 2", Path = $"q {query} 2"} );
-            results.Results.Add(new QueryItem(){Name = $"q {query} 3", Path = $"q {query} 3" });
+            foreach (var item in asList)
+            {
+                results.Results.Add(item);
+            }
 
             return results;
         }
