@@ -28,18 +28,19 @@ namespace Messages {
             "c2FnZXMuUXVlcnlSZXN1bHRzSAASKgoKcGFnZXJlc3VsdBgEIAEoCzIULk1l",
             "c3NhZ2VzLlBhZ2VSZXN1bHRIABIgCgVxdWVyeRgFIAEoCzIPLk1lc3NhZ2Vz",
             "LlF1ZXJ5SABCDAoKU3ViTWVzc2FnZSIbCgtQYWdlUmVxdWVzdBIMCgRwYXRo",
-            "GAEgASgJIjQKDFF1ZXJ5UmVzdWx0cxIkCgdyZXN1bHRzGAEgAygLMhMuTWVz",
-            "c2FnZXMuUXVlcnlJdGVtIicKCVF1ZXJ5SXRlbRIMCgRwYXRoGAEgASgJEgwK",
-            "BG5hbWUYAiABKAkiKAoKUGFnZVJlc3VsdBIMCgRodG1sGAEgASgJEgwKBG5h",
-            "bWUYAiABKAkiFgoFUXVlcnkSDQoFcXVlcnkYASABKAkqWgoLTWVzc2FnZVR5",
-            "cGUSDQoJSEVBUlRCRUFUEAASEAoMUVVFUllSRVNVTFRTEAESCQoFUVVFUlkQ",
-            "AhIPCgtQQUdFUkVRVUVTVBADEg4KClBBR0VSRVNVTFQQBGIGcHJvdG8z"));
+            "GAEgASgJIkQKDFF1ZXJ5UmVzdWx0cxIkCgdyZXN1bHRzGAEgAygLMhMuTWVz",
+            "c2FnZXMuUXVlcnlJdGVtEg4KBmFwcGVuZBgCIAEoCCInCglRdWVyeUl0ZW0S",
+            "DAoEcGF0aBgBIAEoCRIMCgRuYW1lGAIgASgJIigKClBhZ2VSZXN1bHQSDAoE",
+            "aHRtbBgBIAEoCRIMCgRuYW1lGAIgASgJIhYKBVF1ZXJ5Eg0KBXF1ZXJ5GAEg",
+            "ASgJKloKC01lc3NhZ2VUeXBlEg0KCUhFQVJUQkVBVBAAEhAKDFFVRVJZUkVT",
+            "VUxUUxABEgkKBVFVRVJZEAISDwoLUEFHRVJFUVVFU1QQAxIOCgpQQUdFUkVT",
+            "VUxUEARiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Messages.MessageType), }, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.Message), global::Messages.Message.Parser, new[]{ "Type", "Pagerequest", "Queryresults", "Pageresult", "Query" }, new[]{ "SubMessage" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.PageRequest), global::Messages.PageRequest.Parser, new[]{ "Path" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Messages.QueryResults), global::Messages.QueryResults.Parser, new[]{ "Results" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Messages.QueryResults), global::Messages.QueryResults.Parser, new[]{ "Results", "Append" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.QueryItem), global::Messages.QueryItem.Parser, new[]{ "Path", "Name" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.PageResult), global::Messages.PageResult.Parser, new[]{ "Html", "Name" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.Query), global::Messages.Query.Parser, new[]{ "Query_" }, null, null, null)
@@ -488,6 +489,7 @@ namespace Messages {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public QueryResults(QueryResults other) : this() {
       results_ = other.results_.Clone();
+      append_ = other.append_;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -505,6 +507,17 @@ namespace Messages {
       get { return results_; }
     }
 
+    /// <summary>Field number for the "append" field.</summary>
+    public const int AppendFieldNumber = 2;
+    private bool append_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Append {
+      get { return append_; }
+      set {
+        append_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as QueryResults);
@@ -519,6 +532,7 @@ namespace Messages {
         return true;
       }
       if(!results_.Equals(other.results_)) return false;
+      if (Append != other.Append) return false;
       return true;
     }
 
@@ -526,6 +540,7 @@ namespace Messages {
     public override int GetHashCode() {
       int hash = 1;
       hash ^= results_.GetHashCode();
+      if (Append != false) hash ^= Append.GetHashCode();
       return hash;
     }
 
@@ -537,12 +552,19 @@ namespace Messages {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       results_.WriteTo(output, _repeated_results_codec);
+      if (Append != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(Append);
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
       size += results_.CalculateSize(_repeated_results_codec);
+      if (Append != false) {
+        size += 1 + 1;
+      }
       return size;
     }
 
@@ -552,6 +574,9 @@ namespace Messages {
         return;
       }
       results_.Add(other.results_);
+      if (other.Append != false) {
+        Append = other.Append;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -564,6 +589,10 @@ namespace Messages {
             break;
           case 10: {
             results_.AddEntriesFrom(input, _repeated_results_codec);
+            break;
+          }
+          case 16: {
+            Append = input.ReadBool();
             break;
           }
         }

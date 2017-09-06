@@ -79,21 +79,6 @@ namespace Yelper
                 return content["access_token"];
                 
             }
-            
-            // using (var httpClient = new HttpClient())
-            // {
-            //     httpClient.BaseAddress = new Uri(host);
-            //     // var request = new HttpRequestMessage(HttpMethod.Post, url +" " + data);
-            //     // System.Console.WriteLine("request: " + request.ToString());
-            //     // // request.Headers.Add("content-type", "application/x-www-form-urlencded");
-
-            //     // var response = httpClient.SendAsync(request).Result;
-            //     var responseDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.ToString());
-            //     return responseDict["access_token"];
-
-                
-
-            // }
         }
 
         string EncodeAsUrl(Dictionary<string, string> data)
@@ -105,7 +90,9 @@ namespace Yelper
             return url;
         }
 
-        string MakeRequest(string host, string path, string bearer_token, Dictionary<string, string> urlParams)
+
+
+        async Task<string> MakeRequest(string host, string path, string bearer_token, Dictionary<string, string> urlParams)
         {
             var builder = new UriBuilder($"{host}{path}"); 
             builder.Port = -1; 
@@ -120,11 +107,12 @@ namespace Yelper
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearer_token);
-                return client.GetAsync(url).Result.Content.ReadAsStringAsync().Result;
+                var response = await client.GetAsync(url); 
+                return await response.Content.ReadAsStringAsync();
             }
         }
 
-        public string Search (string bearer_token, string term, string location )
+        public async Task<string> Search (string bearer_token, string term, string location )
         {
             var searchParams = new Dictionary<string, string>() {
                 // {"term", term.Replace(' ', '+') },
@@ -134,7 +122,7 @@ namespace Yelper
                 {"limit", SEARCH_LIMIT}
             };
 
-            return MakeRequest(API_HOST, SEARCH_PATH, bearer_token, searchParams); 
+            return await MakeRequest(API_HOST, SEARCH_PATH, bearer_token, searchParams); 
         }
     }
 }

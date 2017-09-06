@@ -11729,6 +11729,7 @@ $root.Messages = (function() {
          * @memberof Messages
          * @interface IQueryResults
          * @property {Array.<Messages.IQueryItem>} [results] QueryResults results
+         * @property {boolean} [append] QueryResults append
          */
 
         /**
@@ -11753,6 +11754,14 @@ $root.Messages = (function() {
          * @instance
          */
         QueryResults.prototype.results = $util.emptyArray;
+
+        /**
+         * QueryResults append.
+         * @member {boolean}append
+         * @memberof Messages.QueryResults
+         * @instance
+         */
+        QueryResults.prototype.append = false;
 
         /**
          * Creates a new QueryResults instance using the specified properties.
@@ -11781,6 +11790,8 @@ $root.Messages = (function() {
             if (message.results != null && message.results.length)
                 for (var i = 0; i < message.results.length; ++i)
                     $root.Messages.QueryItem.encode(message.results[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.append != null && message.hasOwnProperty("append"))
+                writer.uint32(/* id 2, wireType 0 =*/16).bool(message.append);
             return writer;
         };
 
@@ -11819,6 +11830,9 @@ $root.Messages = (function() {
                     if (!(message.results && message.results.length))
                         message.results = [];
                     message.results.push($root.Messages.QueryItem.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.append = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -11864,6 +11878,9 @@ $root.Messages = (function() {
                         return "results." + error;
                 }
             }
+            if (message.append != null && message.hasOwnProperty("append"))
+                if (typeof message.append !== "boolean")
+                    return "append: boolean expected";
             return null;
         };
 
@@ -11889,6 +11906,8 @@ $root.Messages = (function() {
                     message.results[i] = $root.Messages.QueryItem.fromObject(object.results[i]);
                 }
             }
+            if (object.append != null)
+                message.append = Boolean(object.append);
             return message;
         };
 
@@ -11907,11 +11926,15 @@ $root.Messages = (function() {
             var object = {};
             if (options.arrays || options.defaults)
                 object.results = [];
+            if (options.defaults)
+                object.append = false;
             if (message.results && message.results.length) {
                 object.results = [];
                 for (var j = 0; j < message.results.length; ++j)
                     object.results[j] = $root.Messages.QueryItem.toObject(message.results[j], options);
             }
+            if (message.append != null && message.hasOwnProperty("append"))
+                object.append = message.append;
             return object;
         };
 
@@ -12718,9 +12741,18 @@ var Search = (function (_super) {
                 changeSelectedFunction: _this.handleSelectionChanged
             });
         });
-        this.setState({
-            items: newItems
-        });
+        if (!results.append) {
+            this.setState({
+                items: newItems
+            });
+        }
+        else {
+            var existingItems = this.state.items;
+            var combinedItems = existingItems.concat(newItems);
+            this.setState({
+                items: combinedItems
+            });
+        }
     };
     return Search;
 }(React.Component));
@@ -12737,7 +12769,7 @@ var QueryItem = (function (_super) {
         return _this;
     }
     QueryItem.prototype.render = function () {
-        return (React.createElement("li", { className: "searchItem" + (this.state.selected ? " selected" : ""), onClick: this.onClickHandler }, this.state.itemName));
+        return (React.createElement("li", { className: "searchItem" + (this.state.selected ? " selected" : ""), onClick: this.onClickHandler, key: this.props.itemLocation }, this.state.itemName));
     };
     QueryItem.prototype.onClickHandler = function () {
         this.props.changeSelectedFunction(this.state.itemName, this.state.itemLocation);

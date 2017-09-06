@@ -25,6 +25,7 @@ message PageRequest {
 
 message QueryResults {
     repeated QueryItem results = 1;
+    bool append = 2; 
 }
 
 message QueryItem {

@@ -97,9 +97,18 @@ class Search extends React.Component<Props, State> {
             });
         });
 
-        this.setState({
-            items: newItems
-        });
+        if (!results.append) {
+            this.setState({
+                items: newItems
+            });
+        }
+        else {
+            let existingItems = this.state.items;
+            let combinedItems = existingItems.concat(newItems);
+            this.setState({
+                items: combinedItems
+            });
+        }
     }
 }
 
@@ -130,7 +139,8 @@ export class QueryItem extends React.Component<QueryItemProps, QueryItemState> {
     render() {
         return (
             <li className={"searchItem" + (this.state.selected ? " selected" : "" ) }
-                 onClick={this.onClickHandler}>
+                 onClick={this.onClickHandler}
+                 key={this.props.itemLocation}>
                     {this.state.itemName}
             </li>
         );

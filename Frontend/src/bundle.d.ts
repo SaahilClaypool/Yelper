@@ -224,6 +224,9 @@ export namespace Messages {
 
         /** QueryResults results */
         results?: Messages.IQueryItem[];
+
+        /** QueryResults append */
+        append?: boolean;
     }
 
     /** Represents a QueryResults. */
@@ -237,6 +240,9 @@ export namespace Messages {
 
         /** QueryResults results. */
         public results: Messages.IQueryItem[];
+
+        /** QueryResults append. */
+        public append: boolean;
 
         /**
          * Creates a new QueryResults instance using the specified properties.

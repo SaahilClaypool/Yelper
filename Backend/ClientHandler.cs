@@ -13,10 +13,18 @@ namespace Yelper
     public class ClientHandler
     {
         WebSocket socket {get; set;}
+        DataManager MyManager; 
+
+
+        Object queryLock = new Object(); 
+
+        System.DateTime lastQuery = System.DateTime.Now; 
+
 
         public ClientHandler(WebSocket socket)
         {
             this.socket = socket; 
+            MyManager = new DataManager(); 
         }
 
         public void Send(Message message)
@@ -154,24 +162,63 @@ namespace Yelper
 
         public void HandlePageRequest (string path)
         {
-            var PResult = DataManager.Instance.RequestPage(path); 
+            var PResult = MyManager.RequestPage(path); 
 
             var ResponseMessage = new Message(); 
-            ResponseMessage.Type = PResult.GetType().Name.ToLowerInvariant(); 
-            ResponseMessage.Pageresult = PResult; 
+            ResponseMessage.Pageresult = PResult.Result; 
+            ResponseMessage.Type = ResponseMessage.Pageresult.GetType().Name.ToLowerInvariant(); 
 
             Send(ResponseMessage); 
         }
 
         public void HandleQuery(string query)
         {
-            var QResults = DataManager.Instance.Query(query); 
+            Task.Run(() => {
+                bool runningQuery = false; 
+                lock(queryLock)
+                {
+                    runningQuery = lastQuery.AddMilliseconds(500).CompareTo(DateTime.Now) > 0;
+                }
+                if (runningQuery)
+                { // if hasn't been .1 seconds
+                    System.Console.WriteLine("Recent Query Running... Sleeping...");
+                    lock(queryLock)
+                    {
+                        lastQuery = DateTime.Now;
+                    }
+                    System.Threading.Thread.Sleep(500);
+                    lock(queryLock)
+                    {
+                        runningQuery = lastQuery.AddMilliseconds(500).CompareTo(DateTime.Now) > 0;
+                    }
+                    if (runningQuery)
+                    { // if hasn't been .1 seconds
+                        System.Console.WriteLine("New Query came in. Exiting");
+                        return;
+                    }
+                }
+                lock (queryLock)
+                {
+                    lastQuery = DateTime.Now;
+                }
+                System.Console.WriteLine($"Running new query : {query}");
+                System.Console.WriteLine($"Running query : {query}");
+                var CurrentQuery = MyManager.Query(query);
+                var ResponseMessage = new Message();
+                ResponseMessage.Queryresults = CurrentQuery.Result;
+                ResponseMessage.Type = ResponseMessage.Queryresults.GetType().Name.ToLowerInvariant();
 
-            var ResponseMessage = new Message(); 
-            ResponseMessage.Type = QResults.GetType().Name.ToLowerInvariant();
-            ResponseMessage.Queryresults = QResults; 
+                Send(ResponseMessage);
 
-            Send(ResponseMessage);
+
+                // set back time to let new query in
+                lock(queryLock)
+                {
+                    lastQuery = DateTime.Now.AddMilliseconds(-500); 
+                }
+                System.Console.WriteLine("Let in enxt query..");
+
+            });
         }
     }
 

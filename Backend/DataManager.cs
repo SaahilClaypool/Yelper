@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq; 
 using System.Collections.Generic; 
 using System.Linq; 
+using System.Threading.Tasks; 
 
 namespace Yelper 
 {
@@ -10,35 +11,32 @@ namespace Yelper
     class DataManager 
     {
         string Bearer = null; 
-        public static DataManager Instance {
-            get {
-                if (instance == null){
-                    instance = new DataManager(); 
-                }
-                return instance; 
-            }
-        }
-        public static DataManager instance ;
 
-
-        private DataManager() 
+        public DataManager() 
         {
             // useful id initiatlization
         }
 
-        public Messages.QueryResults Query(string query)
+        Task runningQuery = null; 
+
+        public async Task<Messages.QueryResults> Query(string query)
         {
             if(Bearer == null){
                 Bearer = Yelp.Instance.GetBearerToken(); 
             }
-            var yelpResult = JObject.Parse(Yelp.Instance.Search(Bearer, query, "San Fransico, CA"));
+            // var yelpResult = JObject.Parse(Yelp.Instance.Search(Bearer, query, "San Fransico, CA"));
+            var yelpResult = await Yelp.Instance.Search(Bearer, query, "San Fransico, CA");
+            System.Console.WriteLine("JSON: " + yelpResult);
 
-            var businesses = yelpResult["businesses"] as JArray; 
+            var yelpResultJson = JObject.Parse(yelpResult); 
+
+            var businesses = yelpResultJson["businesses"] as JArray; 
 
             var asList = from bus in businesses 
                             select new Messages.QueryItem() {Name = bus["name"].ToString(), Path = bus["id"].ToString()}; 
             
             var results = new Messages.QueryResults(); 
+            results.Append = false; 
             foreach (var item in asList)
             {
                 results.Results.Add(item);
@@ -47,9 +45,11 @@ namespace Yelper
             return results;
         }
 
-        public Messages.PageResult RequestPage(string path)
+        public async Task<Messages.PageResult> RequestPage(string path)
         {
             var result = new Messages.PageResult(); 
+
+            var yelpResult = await Yelp.Instance.GetReviews(Bearer, path);
 
             result.Html = $"<h>header</h><p>new html paragraph from {path}</p>"; 
 
