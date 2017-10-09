@@ -411,11 +411,125 @@ export namespace Messages {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a Review. */
+    interface IReview {
+
+        /** Review url */
+        url?: string;
+
+        /** Review text */
+        text?: string;
+
+        /** Review rating */
+        rating?: number;
+
+        /** Review time */
+        time?: string;
+
+        /** Review name */
+        name?: string;
+    }
+
+    /** Represents a Review. */
+    class Review {
+
+        /**
+         * Constructs a new Review.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Messages.IReview);
+
+        /** Review url. */
+        public url: string;
+
+        /** Review text. */
+        public text: string;
+
+        /** Review rating. */
+        public rating: number;
+
+        /** Review time. */
+        public time: string;
+
+        /** Review name. */
+        public name: string;
+
+        /**
+         * Creates a new Review instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Review instance
+         */
+        public static create(properties?: Messages.IReview): Messages.Review;
+
+        /**
+         * Encodes the specified Review message. Does not implicitly {@link Messages.Review.verify|verify} messages.
+         * @param message Review message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Messages.IReview, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Review message, length delimited. Does not implicitly {@link Messages.Review.verify|verify} messages.
+         * @param message Review message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Messages.IReview, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Review message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Review
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Messages.Review;
+
+        /**
+         * Decodes a Review message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Review
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Messages.Review;
+
+        /**
+         * Verifies a Review message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Review message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Review
+         */
+        public static fromObject(object: { [k: string]: any }): Messages.Review;
+
+        /**
+         * Creates a plain object from a Review message. Also converts values to other types if specified.
+         * @param message Review
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Messages.Review, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Review to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a PageResult. */
     interface IPageResult {
 
-        /** PageResult html */
-        html?: string;
+        /** PageResult reviews */
+        reviews?: Messages.IReview[];
 
         /** PageResult name */
         name?: string;
@@ -430,8 +544,8 @@ export namespace Messages {
          */
         constructor(properties?: Messages.IPageResult);
 
-        /** PageResult html. */
-        public html: string;
+        /** PageResult reviews. */
+        public reviews: Messages.IReview[];
 
         /** PageResult name. */
         public name: string;

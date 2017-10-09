@@ -26,8 +26,6 @@ namespace Yelper
             }
             // var yelpResult = JObject.Parse(Yelp.Instance.Search(Bearer, query, "San Fransico, CA"));
             var yelpResult = await Yelp.Instance.Search(Bearer, query, "San Fransico, CA");
-            System.Console.WriteLine("JSON: " + yelpResult);
-
             var yelpResultJson = JObject.Parse(yelpResult); 
 
             var businesses = yelpResultJson["businesses"] as JArray; 
@@ -51,11 +49,34 @@ namespace Yelper
 
             var yelpResult = await Yelp.Instance.GetReviews(Bearer, path);
 
-            result.Html = $"<h>header</h><p>new html paragraph from {path}</p>"; 
+            var yelpResultJson = JObject.Parse(yelpResult);
+
+
+            var reviews = yelpResultJson["reviews"] as JArray;
+
+            System.Console.WriteLine("yelp result: " +  yelpResult);
+            System.Console.WriteLine("reviews: " + reviews);
+            System.Console.WriteLine("reviews: not cast" + yelpResultJson["reviews"]);
+
+            var asList = from rev in reviews
+                            select new Messages.Review() {
+                                Url = rev["url"].ToString(),
+                                Text = rev["text"].ToString(),
+                                Rating = System.Int32.Parse(rev["rating"].ToString()),
+                                Time = rev["time_created"].ToString(),
+                                Name = "tempname"
+                            }; 
+
+            foreach (var item in asList)
+            {
+                result.Reviews.Add(item); 
+            }
+
+            // result.Html = $@" <h>header</h> <p>new html paragraph from {path}</p> <p>{yelpResult}</p>"; 
+
+            System.Console.WriteLine("Result count for get page is " + result.Reviews.Count);
 
             return result;
-            
-
         }
 
 

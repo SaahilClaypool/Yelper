@@ -33,9 +33,16 @@ message QueryItem {
     string name = 2; 
 }
 
+message Review {
+    string url = 1; 
+    string text = 2; 
+    int32 rating = 3; 
+    string time = 4; 
+    string name = 5; 
+}
 
 message PageResult {
-    string html = 1; 
+    repeated Review reviews = 1; 
     string name = 2; 
 }
 

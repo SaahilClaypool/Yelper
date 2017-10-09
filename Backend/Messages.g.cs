@@ -30,11 +30,13 @@ namespace Messages {
             "LlF1ZXJ5SABCDAoKU3ViTWVzc2FnZSIbCgtQYWdlUmVxdWVzdBIMCgRwYXRo",
             "GAEgASgJIkQKDFF1ZXJ5UmVzdWx0cxIkCgdyZXN1bHRzGAEgAygLMhMuTWVz",
             "c2FnZXMuUXVlcnlJdGVtEg4KBmFwcGVuZBgCIAEoCCInCglRdWVyeUl0ZW0S",
-            "DAoEcGF0aBgBIAEoCRIMCgRuYW1lGAIgASgJIigKClBhZ2VSZXN1bHQSDAoE",
-            "aHRtbBgBIAEoCRIMCgRuYW1lGAIgASgJIhYKBVF1ZXJ5Eg0KBXF1ZXJ5GAEg",
-            "ASgJKloKC01lc3NhZ2VUeXBlEg0KCUhFQVJUQkVBVBAAEhAKDFFVRVJZUkVT",
-            "VUxUUxABEgkKBVFVRVJZEAISDwoLUEFHRVJFUVVFU1QQAxIOCgpQQUdFUkVT",
-            "VUxUEARiBnByb3RvMw=="));
+            "DAoEcGF0aBgBIAEoCRIMCgRuYW1lGAIgASgJIk8KBlJldmlldxILCgN1cmwY",
+            "ASABKAkSDAoEdGV4dBgCIAEoCRIOCgZyYXRpbmcYAyABKAUSDAoEdGltZRgE",
+            "IAEoCRIMCgRuYW1lGAUgASgJIj0KClBhZ2VSZXN1bHQSIQoHcmV2aWV3cxgB",
+            "IAMoCzIQLk1lc3NhZ2VzLlJldmlldxIMCgRuYW1lGAIgASgJIhYKBVF1ZXJ5",
+            "Eg0KBXF1ZXJ5GAEgASgJKloKC01lc3NhZ2VUeXBlEg0KCUhFQVJUQkVBVBAA",
+            "EhAKDFFVRVJZUkVTVUxUUxABEgkKBVFVRVJZEAISDwoLUEFHRVJFUVVFU1QQ",
+            "AxIOCgpQQUdFUkVTVUxUEARiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Messages.MessageType), }, new pbr::GeneratedClrTypeInfo[] {
@@ -42,7 +44,8 @@ namespace Messages {
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.PageRequest), global::Messages.PageRequest.Parser, new[]{ "Path" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.QueryResults), global::Messages.QueryResults.Parser, new[]{ "Results", "Append" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.QueryItem), global::Messages.QueryItem.Parser, new[]{ "Path", "Name" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Messages.PageResult), global::Messages.PageResult.Parser, new[]{ "Html", "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Messages.Review), global::Messages.Review.Parser, new[]{ "Url", "Text", "Rating", "Time", "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Messages.PageResult), global::Messages.PageResult.Parser, new[]{ "Reviews", "Name" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Messages.Query), global::Messages.Query.Parser, new[]{ "Query_" }, null, null, null)
           }));
     }
@@ -746,6 +749,235 @@ namespace Messages {
 
   }
 
+  public sealed partial class Review : pb::IMessage<Review> {
+    private static readonly pb::MessageParser<Review> _parser = new pb::MessageParser<Review>(() => new Review());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Review> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Messages.MessagesReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Review() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Review(Review other) : this() {
+      url_ = other.url_;
+      text_ = other.text_;
+      rating_ = other.rating_;
+      time_ = other.time_;
+      name_ = other.name_;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Review Clone() {
+      return new Review(this);
+    }
+
+    /// <summary>Field number for the "url" field.</summary>
+    public const int UrlFieldNumber = 1;
+    private string url_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Url {
+      get { return url_; }
+      set {
+        url_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "text" field.</summary>
+    public const int TextFieldNumber = 2;
+    private string text_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Text {
+      get { return text_; }
+      set {
+        text_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "rating" field.</summary>
+    public const int RatingFieldNumber = 3;
+    private int rating_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Rating {
+      get { return rating_; }
+      set {
+        rating_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "time" field.</summary>
+    public const int TimeFieldNumber = 4;
+    private string time_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Time {
+      get { return time_; }
+      set {
+        time_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 5;
+    private string name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Review);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Review other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Url != other.Url) return false;
+      if (Text != other.Text) return false;
+      if (Rating != other.Rating) return false;
+      if (Time != other.Time) return false;
+      if (Name != other.Name) return false;
+      return true;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Url.Length != 0) hash ^= Url.GetHashCode();
+      if (Text.Length != 0) hash ^= Text.GetHashCode();
+      if (Rating != 0) hash ^= Rating.GetHashCode();
+      if (Time.Length != 0) hash ^= Time.GetHashCode();
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Url.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Url);
+      }
+      if (Text.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Text);
+      }
+      if (Rating != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Rating);
+      }
+      if (Time.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Time);
+      }
+      if (Name.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Name);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Url.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Url);
+      }
+      if (Text.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Text);
+      }
+      if (Rating != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Rating);
+      }
+      if (Time.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Time);
+      }
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Review other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Url.Length != 0) {
+        Url = other.Url;
+      }
+      if (other.Text.Length != 0) {
+        Text = other.Text;
+      }
+      if (other.Rating != 0) {
+        Rating = other.Rating;
+      }
+      if (other.Time.Length != 0) {
+        Time = other.Time;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 10: {
+            Url = input.ReadString();
+            break;
+          }
+          case 18: {
+            Text = input.ReadString();
+            break;
+          }
+          case 24: {
+            Rating = input.ReadInt32();
+            break;
+          }
+          case 34: {
+            Time = input.ReadString();
+            break;
+          }
+          case 42: {
+            Name = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class PageResult : pb::IMessage<PageResult> {
     private static readonly pb::MessageParser<PageResult> _parser = new pb::MessageParser<PageResult>(() => new PageResult());
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -753,7 +985,7 @@ namespace Messages {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Messages.MessagesReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Messages.MessagesReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -770,7 +1002,7 @@ namespace Messages {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PageResult(PageResult other) : this() {
-      html_ = other.html_;
+      reviews_ = other.reviews_.Clone();
       name_ = other.name_;
     }
 
@@ -779,15 +1011,14 @@ namespace Messages {
       return new PageResult(this);
     }
 
-    /// <summary>Field number for the "html" field.</summary>
-    public const int HtmlFieldNumber = 1;
-    private string html_ = "";
+    /// <summary>Field number for the "reviews" field.</summary>
+    public const int ReviewsFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Messages.Review> _repeated_reviews_codec
+        = pb::FieldCodec.ForMessage(10, global::Messages.Review.Parser);
+    private readonly pbc::RepeatedField<global::Messages.Review> reviews_ = new pbc::RepeatedField<global::Messages.Review>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Html {
-      get { return html_; }
-      set {
-        html_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
+    public pbc::RepeatedField<global::Messages.Review> Reviews {
+      get { return reviews_; }
     }
 
     /// <summary>Field number for the "name" field.</summary>
@@ -814,7 +1045,7 @@ namespace Messages {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Html != other.Html) return false;
+      if(!reviews_.Equals(other.reviews_)) return false;
       if (Name != other.Name) return false;
       return true;
     }
@@ -822,7 +1053,7 @@ namespace Messages {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Html.Length != 0) hash ^= Html.GetHashCode();
+      hash ^= reviews_.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       return hash;
     }
@@ -834,10 +1065,7 @@ namespace Messages {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Html.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Html);
-      }
+      reviews_.WriteTo(output, _repeated_reviews_codec);
       if (Name.Length != 0) {
         output.WriteRawTag(18);
         output.WriteString(Name);
@@ -847,9 +1075,7 @@ namespace Messages {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Html.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Html);
-      }
+      size += reviews_.CalculateSize(_repeated_reviews_codec);
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
@@ -861,9 +1087,7 @@ namespace Messages {
       if (other == null) {
         return;
       }
-      if (other.Html.Length != 0) {
-        Html = other.Html;
-      }
+      reviews_.Add(other.reviews_);
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
@@ -878,7 +1102,7 @@ namespace Messages {
             input.SkipLastField();
             break;
           case 10: {
-            Html = input.ReadString();
+            reviews_.AddEntriesFrom(input, _repeated_reviews_codec);
             break;
           }
           case 18: {
@@ -898,7 +1122,7 @@ namespace Messages {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Messages.MessagesReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Messages.MessagesReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

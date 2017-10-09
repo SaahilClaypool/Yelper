@@ -1,38 +1,50 @@
 import * as React from 'react';
 import {Messages} from './bundle'
 import SocketClient from './SocketClient';
+import {ReviewList} from './Search'; 
 
 
 export interface Props {
-    html: string; 
-}
-export interface State {
-    html: string; 
+    reviews: Messages.PageResult; 
 }
 
-class Content extends React.Component<Props, State> {
+class Content extends React.Component<Props, Props> {
     constructor(props: Props){
         super(props);
+
+        var initialState : Messages.PageResult = Messages.PageResult.create();
+        initialState.name = ""; 
+        initialState.reviews = new Array<Messages.Review>(); 
+
         this.state = {
-            html: this.props.html,
-        };
+            reviews: initialState
+        }
+
         this.onNewContent = this.onNewContent.bind(this); 
         let socket = SocketClient.GetInstance(); 
         socket.onPageResult= this.onNewContent; 
-
-
     }
 
     onNewContent(newContent: Messages.PageResult) {
       console.log(`Message: ${newContent}`)
       this.setState({
-          html: newContent.html
-      })
+          reviews: newContent
+      });
     }
 
     render(){
+        if(this.state == null || this.state.reviews == null || this.state.reviews.reviews == null) {
+            return (
+                <div className="content">
+                    <p>state is null</p>
+                </div>
+            );
+        }
         return (
-            <div className="content" dangerouslySetInnerHTML={{__html: this.state.html}}/>
+            <div className="content">
+                {/* <p>state is {this.state.reviews.toJSON()}</p> */}
+                <ReviewList reviews={this.state.reviews.reviews}/>
+            </div>
         )
     }
 }

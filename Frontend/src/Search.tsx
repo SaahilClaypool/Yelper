@@ -178,4 +178,62 @@ export class QueryResultList extends React.Component<QueryProps, {}> {
     }
 }
 
+export interface ReviewProps {
+    url : string,
+    text : string,
+    rating : number,
+    time : string,
+    name : string
+}
+export class Review extends React.Component<ReviewProps> {
+    constructor(props: ReviewProps) {
+        super(props);    
+    }
+    render() {
+        // TODO Add keys to the things so they aren't alawys re-rendered
+        return (
+        <div>
+            <li key={this.props.time}>
+            <p>stars: {this.props.rating}</p>
+            <a href={this.props.url}>{this.props.name}</a>
+            <p>{this.props.text}</p>
+            <p>time: {this.props.time}</p>
+            </li>
+        </div>
+        ); 
+    }
+}
+
+export interface ReviewListProps {
+    reviews : Messages.IReview[]; 
+}
+
+
+export class ReviewList extends React.Component<ReviewListProps,ReviewListProps> {
+    constructor(props: ReviewListProps) {
+        super(props);    
+    }
+
+    render() {
+        let reviewList = this.props.reviews.map((rev) => {
+            return new Review({
+                url: rev.url, 
+                text: rev.text, 
+                rating: rev.rating, 
+                time: rev.time, 
+                name: rev.name
+            }).render(); 
+        });
+        return (
+            <div>
+                <ul>
+                    {reviewList}
+                    <p>there are {reviewList.length} reviews</p>
+                </ul>
+            </div>
+        );
+    }
+
+}
+
 export default Search; 

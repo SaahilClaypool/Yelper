@@ -8,6 +8,11 @@ Built upon react, typescript, C# and websockets / Asp.net core
 
 ## Notes
 
+Test the difference using http get and such 
+(would just need to make a get from the page side and return json. Would be similar to the websockets without socket startup cost)
+This would make more sense I don't 'push' information, but rather request and get information. 
+Making this a rest API makes more sense
+
 Make a comparison app
 
 Search and select up to two places. Will show name at top, stars, price, and list of ratings
@@ -64,3 +69,4 @@ Make search search for up to ~20 results. Repeat query if the user scrolls to th
     "distance": 3460.9011196639995
 }
 ```
+

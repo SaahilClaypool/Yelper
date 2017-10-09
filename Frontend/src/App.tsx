@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Search from './Search';
 import Content from './Content'; 
+import * as Messages from './bundle'
 
 export interface State {
 
@@ -12,6 +13,9 @@ class App extends React.Component<{}, State> {
     }
 
     render() {
+        var content = Messages.Messages.PageResult.create(); 
+        content.name = "tempName"; 
+        content.reviews = new Array<Messages.Messages.Review>(); 
         return (
             <div className="App">
                 <div className="Header">
@@ -19,7 +23,7 @@ class App extends React.Component<{}, State> {
                     <h2>Yelp based search tool</h2>
                 </div>
                 <Search />
-                <Content html="<h1>this is a test</h1><p>paragraph</p>" />
+                <Content reviews={content}/>
             </div>
         );
     }

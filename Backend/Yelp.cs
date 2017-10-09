@@ -91,7 +91,6 @@ namespace Yelper
         }
 
 
-
         async Task<string> MakeRequest(string host, string path, string bearer_token, Dictionary<string, string> urlParams)
         {
             var builder = new UriBuilder($"{host}{path}"); 
@@ -110,6 +109,13 @@ namespace Yelper
                 var response = await client.GetAsync(url); 
                 return await response.Content.ReadAsStringAsync();
             }
+        }
+
+        public async Task<string> GetReviews (string bearer_token, string busId) 
+        {
+            var searchParams = new Dictionary<string, string>();
+            var busReviews = BUSINESS_PATH + $"{busId}/reviews"; 
+            return await MakeRequest(API_HOST, busReviews, bearer_token, searchParams); 
         }
 
         public async Task<string> Search (string bearer_token, string term, string location )
