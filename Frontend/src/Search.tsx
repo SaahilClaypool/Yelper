@@ -31,8 +31,10 @@ class Search extends React.Component<Props, State> {
 
     render () {
         return (
-            <div className="search">
-                <input className="searchInput" type="text" value={this.state.value} onChange={this.handleQueryInput} />
+            <div className="search col-2">
+                <span className="input-group-addon">
+                    <input className="searchInput form-control" type="text" value={this.state.value} onChange={this.handleQueryInput} />
+                </span>
                 <QueryResultList
                     items={this.state.items}
                     changeSelectedFunction={this.handleSelectionChanged}>
@@ -138,11 +140,11 @@ export class QueryItem extends React.Component<QueryItemProps, QueryItemState> {
 
     render() {
         return (
-            <li className={"searchItem" + (this.state.selected ? " selected" : "" ) }
+            <button className={"list-group-item list-group-item-action" + (this.state.selected ? " active" : "" ) }
                  onClick={this.onClickHandler}
                  key={this.props.itemLocation}>
                     {this.state.itemName}
-            </li>
+            </button>
         );
     }
 
@@ -169,11 +171,9 @@ export class QueryResultList extends React.Component<QueryProps, {}> {
         }); 
 
         return (
-        <div>
-            <ul className="queryResultList">
+            <div className="list-group queryResultList">
                 {items}
-            </ul >
-        </div>
+            </div>
         ); 
     }
 }
@@ -191,15 +191,23 @@ export class Review extends React.Component<ReviewProps> {
     }
     render() {
         // TODO Add keys to the things so they aren't alawys re-rendered
+        let starsFun = (rating: number) => {
+            let retStr: string = ""; 
+            for(let _ of new Array(rating)){
+                retStr += "⭐"; 
+            }
+            return retStr; 
+        }
         return (
-        <div>
-            <li key={this.props.time}>
-            <p>stars: {this.props.rating}</p>
-            <a href={this.props.url}>{this.props.name}</a>
-            <p>{this.props.text}</p>
-            <p>time: {this.props.time}</p>
-            </li>
-        </div>
+            <div>
+                <li className="list-group-item flex-column align-items-start"
+                    key={this.props.time}>
+                    <h5> <a href={this.props.url}>{this.props.name}</a> </h5>
+                    <p>{starsFun(this.props.rating)}</p>
+                    <p>{this.props.text}</p>
+                    <small className="text-muted">{this.props.time}</small>
+                </li>
+            </div>
         ); 
     }
 }
@@ -225,11 +233,11 @@ export class ReviewList extends React.Component<ReviewListProps,ReviewListProps>
             }).render(); 
         });
         return (
-            <div>
-                <ul>
+            <div >
+                <ul className="list-group">
                     {reviewList}
-                    <p>there are {reviewList.length} reviews</p>
                 </ul>
+                <p>there are {reviewList.length} reviews</p>
             </div>
         );
     }

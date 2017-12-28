@@ -41,7 +41,7 @@ class Content extends React.Component<Props, Props> {
             );
         }
         return (
-            <div className="content">
+            <div className="content col">
                 {/* <p>state is {this.state.reviews.toJSON()}</p> */}
                 <ReviewList reviews={this.state.reviews.reviews}/>
             </div>

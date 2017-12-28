@@ -9,7 +9,7 @@ foreach ($file in Get-ChildItem -Path './Frontend/Output')
     Copy-Item -Path $file.FullName  -Destination './Backend/wwwroot'
 }
 
-Set-Location './Backend'
-dotnet.exe run 
+# Set-Location './Backend'
+# dotnet.exe run 
 
-Set-Location ..
+# Set-Location ..

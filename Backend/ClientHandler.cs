@@ -16,9 +16,10 @@ namespace Yelper
         DataManager MyManager; 
 
 
-        Object queryLock = new Object(); 
+        // Object queryLock = new Object(); 
 
-        System.DateTime lastQuery = System.DateTime.Now; 
+        // System.DateTime lastQuery = System.DateTime.Now; 
+        Queue<string> queryQ = new Queue<string>(); 
 
 
         public ClientHandler(WebSocket socket)
@@ -115,7 +116,7 @@ namespace Yelper
                 while(this.socket.State != WebSocketState.Closed)
                 {
                     try{
-                        Console.WriteLine($"PING");
+                        // Console.WriteLine($"PING");
                         this.Send(new Message(){Type = "heartbeat"});
                         System.Threading.Thread.Sleep(15000);
                     }
@@ -124,7 +125,6 @@ namespace Yelper
                         break;
                     }
                 }
-                
                 Console.WriteLine($"Stopping heartbeat: {this.socket.State}"); 
             });
 
@@ -173,52 +173,36 @@ namespace Yelper
 
         public void HandleQuery(string query)
         {
-            Task.Run(() => {
-                bool runningQuery = false; 
-                lock(queryLock)
+
+            if (queryQ.Count > 0)
+            {
+                queryQ.Dequeue();
+                queryQ.Enqueue(query);
+            }
+            else
+            {
+                Task.Run(() =>
                 {
-                    runningQuery = lastQuery.AddMilliseconds(500).CompareTo(DateTime.Now) > 0;
-                }
-                if (runningQuery)
-                { // if hasn't been .1 seconds
-                    System.Console.WriteLine("Recent Query Running... Sleeping...");
-                    lock(queryLock)
-                    {
-                        lastQuery = DateTime.Now;
-                    }
-                    System.Threading.Thread.Sleep(500);
-                    lock(queryLock)
-                    {
-                        runningQuery = lastQuery.AddMilliseconds(500).CompareTo(DateTime.Now) > 0;
-                    }
-                    if (runningQuery)
-                    { // if hasn't been .1 seconds
-                        System.Console.WriteLine("New Query came in. Exiting");
-                        return;
-                    }
-                }
-                lock (queryLock)
-                {
-                    lastQuery = DateTime.Now;
-                }
-                System.Console.WriteLine($"Running new query : {query}");
-                System.Console.WriteLine($"Running query : {query}");
-                var CurrentQuery = MyManager.Query(query);
-                var ResponseMessage = new Message();
-                ResponseMessage.Queryresults = CurrentQuery.Result;
-                ResponseMessage.Type = ResponseMessage.Queryresults.GetType().Name.ToLowerInvariant();
+                    queryQ.Enqueue(query); 
+                    // make this run a query, and when done, start the next 
+                    System.Console.WriteLine($"Running query : {query}");
+                    var CurrentQuery = MyManager.Query(query);
+                    var ResponseMessage = new Message();
+                    ResponseMessage.Queryresults = CurrentQuery.Result;
+                    ResponseMessage.Type = ResponseMessage.Queryresults.GetType().Name.ToLowerInvariant();
+                    System.Console.WriteLine($"Got response {query}");
+                    Send(ResponseMessage);
 
-                Send(ResponseMessage);
-
-
-                // set back time to let new query in
-                lock(queryLock)
-                {
-                    lastQuery = DateTime.Now.AddMilliseconds(-500); 
-                }
-                System.Console.WriteLine("Let in enxt query..");
-
-            });
+                    // Handle any waiting query
+                    while(queryQ.Count > 0) { 
+                        string next = queryQ.Dequeue();
+                        if(next != query){
+                            HandleQuery(next);
+                            break; 
+                        }
+                     }
+                });
+            }
         }
     }
 

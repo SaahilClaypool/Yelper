@@ -18,12 +18,14 @@ class App extends React.Component<{}, State> {
         content.reviews = new Array<Messages.Messages.Review>(); 
         return (
             <div className="App">
-                <div className="Header">
-                    <h1> Yelp! </h1>
-                    <h2>Yelp based search tool</h2>
+                <div className="page-header">
+                    <h1 className="display-1 text-center"> Yelp! </h1>
+                    <h5 className="display-5 text-center">Yelp based search tool</h5>
                 </div>
-                <Search />
-                <Content reviews={content}/>
+                <div className="row">
+                    <Search />
+                    <Content reviews={content} />
+                </div>
             </div>
         );
     }

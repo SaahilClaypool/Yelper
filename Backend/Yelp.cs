@@ -42,7 +42,7 @@ namespace Yelper
 
         string DEFAULT_TERM = "dinner";
         string DEFAULT_LOCATION = "San Francisco, CA";
-        string SEARCH_LIMIT = "3";
+        string SEARCH_LIMIT = "15";
 
 
         public string GetBearerToken()
@@ -106,6 +106,7 @@ namespace Yelper
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearer_token);
+                System.Console.WriteLine("Made Request: " + url);
                 var response = await client.GetAsync(url); 
                 return await response.Content.ReadAsStringAsync();
             }
@@ -114,6 +115,7 @@ namespace Yelper
         public async Task<string> GetReviews (string bearer_token, string busId) 
         {
             var searchParams = new Dictionary<string, string>();
+            searchParams.Add("limit", SEARCH_LIMIT);
             var busReviews = BUSINESS_PATH + $"{busId}/reviews"; 
             return await MakeRequest(API_HOST, busReviews, bearer_token, searchParams); 
         }

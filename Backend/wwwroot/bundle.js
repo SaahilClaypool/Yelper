@@ -8708,8 +8708,9 @@ var Search = (function (_super) {
         return _this;
     }
     Search.prototype.render = function () {
-        return (React.createElement("div", { className: "search" },
-            React.createElement("input", { className: "searchInput", type: "text", value: this.state.value, onChange: this.handleQueryInput }),
+        return (React.createElement("div", { className: "search col-2" },
+            React.createElement("span", { className: "input-group-addon" },
+                React.createElement("input", { className: "searchInput form-control", type: "text", value: this.state.value, onChange: this.handleQueryInput })),
             React.createElement(QueryResultList, { items: this.state.items, changeSelectedFunction: this.handleSelectionChanged })));
     };
     Search.prototype.handleQueryInput = function (event) {
@@ -8785,7 +8786,7 @@ var QueryItem = (function (_super) {
         return _this;
     }
     QueryItem.prototype.render = function () {
-        return (React.createElement("li", { className: "searchItem" + (this.state.selected ? " selected" : ""), onClick: this.onClickHandler, key: this.props.itemLocation }, this.state.itemName));
+        return (React.createElement("button", { className: "list-group-item list-group-item-action" + (this.state.selected ? " active" : ""), onClick: this.onClickHandler, key: this.props.itemLocation }, this.state.itemName));
     };
     QueryItem.prototype.onClickHandler = function () {
         this.props.changeSelectedFunction(this.state.itemName, this.state.itemLocation);
@@ -8806,8 +8807,7 @@ var QueryResultList = (function (_super) {
         var items = this.props.items.map(function (item) {
             return item.render();
         });
-        return (React.createElement("div", null,
-            React.createElement("ul", { className: "queryResultList" }, items)));
+        return (React.createElement("div", { className: "list-group queryResultList" }, items));
     };
     return QueryResultList;
 }(React.Component));
@@ -8819,16 +8819,23 @@ var Review = (function (_super) {
     }
     Review.prototype.render = function () {
         // TODO Add keys to the things so they aren't alawys re-rendered
+        var starsFun = function (rating) {
+            var retStr = "";
+            for (var _i = 0, _a = new Array(rating); _i < _a.length; _i++) {
+                var _ = _a[_i];
+                retStr += "⭐";
+            }
+            return retStr;
+        };
         return (React.createElement("div", null,
-            React.createElement("li", { key: this.props.time },
-                React.createElement("p", null,
-                    "stars: ",
-                    this.props.rating),
-                React.createElement("a", { href: this.props.url }, this.props.name),
+            React.createElement("li", { className: "list-group-item flex-column align-items-start", key: this.props.time },
+                React.createElement("h5", null,
+                    " ",
+                    React.createElement("a", { href: this.props.url }, this.props.name),
+                    " "),
+                React.createElement("p", null, starsFun(this.props.rating)),
                 React.createElement("p", null, this.props.text),
-                React.createElement("p", null,
-                    "time: ",
-                    this.props.time))));
+                React.createElement("small", { className: "text-muted" }, this.props.time))));
     };
     return Review;
 }(React.Component));
@@ -8849,12 +8856,11 @@ var ReviewList = (function (_super) {
             }).render();
         });
         return (React.createElement("div", null,
-            React.createElement("ul", null,
-                reviewList,
-                React.createElement("p", null,
-                    "there are ",
-                    reviewList.length,
-                    " reviews"))));
+            React.createElement("ul", { className: "list-group" }, reviewList),
+            React.createElement("p", null,
+                "there are ",
+                reviewList.length,
+                " reviews")));
     };
     return ReviewList;
 }(React.Component));
@@ -13080,11 +13086,12 @@ var App = (function (_super) {
         content.name = "tempName";
         content.reviews = new Array();
         return (React.createElement("div", { className: "App" },
-            React.createElement("div", { className: "Header" },
-                React.createElement("h1", null, " Yelp! "),
-                React.createElement("h2", null, "Yelp based search tool")),
-            React.createElement(Search_1.default, null),
-            React.createElement(Content_1.default, { reviews: content })));
+            React.createElement("div", { className: "page-header" },
+                React.createElement("h1", { className: "display-1 text-center" }, " Yelp! "),
+                React.createElement("h5", { className: "display-5 text-center" }, "Yelp based search tool")),
+            React.createElement("div", { className: "row" },
+                React.createElement(Search_1.default, null),
+                React.createElement(Content_1.default, { reviews: content }))));
     };
     return App;
 }(React.Component));
@@ -13148,7 +13155,7 @@ var Content = (function (_super) {
             return (React.createElement("div", { className: "content" },
                 React.createElement("p", null, "state is null")));
         }
-        return (React.createElement("div", { className: "content" },
+        return (React.createElement("div", { className: "content col" },
             React.createElement(Search_1.ReviewList, { reviews: this.state.reviews.reviews })));
     };
     return Content;
@@ -13178,7 +13185,7 @@ exports = module.exports = __webpack_require__(101)(undefined);
 
 
 // module
-exports.push([module.i, ".App {\n    display: grid; \n    grid-template-columns: 1fr 5fr; \n    grid-gap: 10px; \n    grid-auto-rows: 1fr 10fr; \n}\n.Header {\n    grid-column: 1/3;\n    grid-row: 1; \n}\n.search {\n    grid-column: 1; \n    grid-row: 2; \n    background-color: #111; \n    border: 1px border-style blue; \n}\n.content {\n    /* margin-left: 250px;  */\n    grid-column: 2;\n    grid-row: 2; \n}\n.search .searchInput {\n    padding: 5px 5px 5px 5px;\n    margin: 5px; \n    width: 90%;\n    align-content: center; \n}\n\n.search .queryResultList:hover {\n    overflow-y: scroll; \n}\n\n.search .queryResultList {\n    height: 90vh; \n    padding-left: 10px; \n    margin-left: 10px; \n    overflow-y: hidden; \n}\n.queryResultList .searchItem {\n    border: 1px solid black;\n    padding: 5px 5px 5px 5px;\n    width: 90%;\n    font-size: 16px;\n    background-color: white\n}\n.queryResultList .searchItem:hover{\n    background-color: rgba(241, 241, 241, 0.88);\n}\n.queryResultList .searchItem.selected{\n    background-color: #ACDBF2;\n}", ""]);
+exports.push([module.i, ".search {\n    background-color: darkslateblue; \n    border: 1px border-style blue; \n}\n\n.search .queryResultList:hover {\n    overflow-y: scroll; \n}\n\n.search .searchInput {\n    width: 100%;\n}\n\n.search .queryResultList {\n    height: 90vh; \n    padding-left: 10px; \n    margin-left: 10px; \n    /* overflow-y: hidden;  */\n}\n.queryResultList .searchItem {\n    border: 1px solid darkslateblue;\n    padding: 5px 5px 5px 5px;\n    width: 90%;\n    font-size: 16px;\n    background-color: white\n}\n.queryResultList .searchItem:hover{\n    background-color: rgba(241, 241, 241, 0.88);\n}\n.queryResultList .searchItem.selected{\n    background-color: #ACDBF2;\n}\n.page-header {\n    background-color: darkslateblue; \n    color: white; \n    margin-bottom: 0; \n    padding-bottom: 0; \n}\n.page-header h5{\n    margin-bottom: 0; \n    padding-bottom: 0; \n}", ""]);
 
 // exports
 

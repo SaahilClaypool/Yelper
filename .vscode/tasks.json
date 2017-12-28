@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/Yelper.csproj"
+                "${workspaceRoot}/Backend/Yelper.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

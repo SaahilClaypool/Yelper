@@ -15,15 +15,15 @@ namespace Yelper
         public DataManager() 
         {
             // useful id initiatlization
+            if(Bearer == null){
+                Bearer = Yelp.Instance.GetBearerToken(); 
+            }
         }
 
         Task runningQuery = null; 
 
         public async Task<Messages.QueryResults> Query(string query)
         {
-            if(Bearer == null){
-                Bearer = Yelp.Instance.GetBearerToken(); 
-            }
             // var yelpResult = JObject.Parse(Yelp.Instance.Search(Bearer, query, "San Fransico, CA"));
             var yelpResult = await Yelp.Instance.Search(Bearer, query, "San Fransico, CA");
             var yelpResultJson = JObject.Parse(yelpResult); 
@@ -64,7 +64,7 @@ namespace Yelper
                                 Text = rev["text"].ToString(),
                                 Rating = System.Int32.Parse(rev["rating"].ToString()),
                                 Time = rev["time_created"].ToString(),
-                                Name = "tempname"
+                                Name = rev["user"]["name"].ToString()
                             }; 
 
             foreach (var item in asList)
